@@ -1,0 +1,105 @@
+{% extends 'home/index.html.twig' %}
+
+
+{% block body %}
+<div class="container my-4">
+  
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Projets disponibles</h2>
+  {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_project_new') }}" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> Nouveau Projet
+        </a>
+         {% endif %}
+    </div>
+ 
+   <form method="get" action="{{ path('app_project_index') }}">
+    <div class="row g-2 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="title" class="form-control" placeholder="Nom du projet" value="{{ app.request.get('title') }}">
+        </div>
+        <div class="col-md-3">
+<select name="status" class="form-select">
+    <option value="">Statut</option>
+    <option value="in_progress" {{ app.request.get('status') == 'in_progress' ? 'selected' }}>in_progress</option>
+    <option value="completed" {{ app.request.get('status') == 'completed' ? 'selected' }}>completed</option>
+    <option value="pending" {{ app.request.get('status') == 'pending' ? 'selected' }}>pending</option>
+</select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="filename" class="form-control" placeholder="Nom du fichier ou URL" value="{{ app.request.get('filename') }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-outline-danger w-100">
+                <i class="bi bi-funnel"></i> Filtrer
+            </button>
+        </div>
+    </div>
+</form>
+
+
+    <div class="row g-4">
+        {% for project in projects %}
+     <div class="col-md-4">
+    <div class="card shadow-sm h-100">
+
+        {# ✅ Affichage de l'image uploadée (champ "image") #}
+        {% if project.image %}
+            <img src="{{ asset('uploads/images/' ~ project.image) }}" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="Image du projet">
+        {% else %}
+            <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" alt="Aucune image">
+        {% endif %}
+
+        <div class="card-body text-center">
+            <h5 class="card-title text-danger">{{ project.title }}</h5>
+
+            <p class="card-text small text-muted">
+                {{ project.description|length > 100 ? project.description|slice(0, 100) ~ '...' : project.description }}
+            </p>
+
+            <p class="card-text">
+                <strong>Statut:</strong> {{ project.status }}<br>
+                <strong>Tâches:</strong> {{ project.numberOfTasks }}<br>
+
+                {# ✅ Affichage en texte du champ filenameOrUrl #}
+                {% if project.filenameOrUrl %}
+                    <strong>Fichier / URL :</strong>
+                    <div class="text-break small text-dark">
+                        {{ project.filenameOrUrl }}
+                    </div>
+                {% endif %}
+            </p>
+
+<div class="d-flex justify-content-center gap-2 mt-3">
+    <a href="{{ path('app_project_show', {'id': project.id}) }}" class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-eye"></i> Voir
+    </a>
+       {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('app_project_edit', {'id': project.id}) }}" class="btn btn-outline-success btn-sm">
+        <i class="bi bi-pencil-square"></i> Modifier
+    </a>
+
+ 
+        <form method="post" action="{{ path('app_project_delete', {'id': project.id}) }}" 
+              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');" 
+              style="display: inline;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+            <button class="btn btn-outline-danger btn-sm" title="Supprimer">
+                <i class="bi bi-trash"></i> Supprimer
+            </button>
+        </form>
+    {% endif %}
+</div>
+
+        </div>
+    </div>
+</div>
+
+        {% else %}
+            <div class="col-12 text-center text-muted">
+                Aucun projet trouvé.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

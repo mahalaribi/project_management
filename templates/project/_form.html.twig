@@ -1,0 +1,94 @@
+<style>
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(150, 0, 0, 0.1);
+    }
+
+    form div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+    }
+
+    .form-error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    button.btn {
+        background-color: #cc0000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn:hover {
+        background-color: #990000;
+    }
+</style>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div>
+    {{ form_label(form.title) }}
+    <div class="form-error">{{ form_errors(form.title) }}</div>
+    {{ form_widget(form.title) }}
+</div>
+
+<div>
+    {{ form_label(form.image) }}
+    <div class="form-error">{{ form_errors(form.image) }}</div>
+    {{ form_widget(form.image) }}
+</div>
+
+<div>
+    {{ form_label(form.filenameOrUrl) }}
+    <div class="form-error">{{ form_errors(form.filenameOrUrl) }}</div>
+    {{ form_widget(form.filenameOrUrl) }}
+</div>
+
+<div>
+    {{ form_label(form.numberOfTasks) }}
+    <div class="form-error">{{ form_errors(form.numberOfTasks) }}</div>
+    {{ form_widget(form.numberOfTasks) }}
+</div>
+
+<div>
+    {{ form_label(form.description) }}
+    <div class="form-error">{{ form_errors(form.description) }}</div>
+    {{ form_widget(form.description) }}
+</div>
+
+<div>
+    {{ form_label(form.status) }}
+    <div class="form-error">{{ form_errors(form.status) }}</div>
+    {{ form_widget(form.status) }}
+</div>
+
+<button class="btn">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}

@@ -1,0 +1,24 @@
+{% extends 'home/index.html.twig' %}
+{% block body %}
+    <h1>Edit User</h1>
+   <style>
+    .back-link {
+        display: inline-block;
+        margin-bottom: 4px;
+        padding: 8px 15px;
+        background-color: #cc0000;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-link:hover {
+        background-color: #990000;
+    }
+</style>
+<a href="{{ path('app_user_index') }}" class="back-link">← </a>
+    {{ include('user/_form.html.twig') }}
+
+{% endblock %}

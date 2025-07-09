@@ -1,0 +1,117 @@
+<style>
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(150, 0, 0, 0.1);
+    }
+
+    form div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+    }
+
+    .form-error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    button.btn {
+        background-color: #cc0000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn:hover {
+        background-color: #990000;
+    }
+</style>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.querySelector('.password-input');
+        const toggleIcon = document.querySelector('.toggle-password');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+
+<div class="mb-3">
+    {{ form_label(form.email, 'Adresse e-mail', {'label_attr': {'class': 'form-label text-danger'}}) }}
+    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+    <div class="form-text text-danger">{{ form_errors(form.email) }}</div>
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'form-label text-danger'}}) }}
+    <div class="input-group">
+        {{ form_widget(form.password, {
+            'attr': {
+                'class': 'form-control',
+                'id': 'password-field'
+            }
+        }) }}
+        <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;">
+            <i class="bi bi-eye" id="togglePasswordIcon"></i>
+        </span>
+    </div>
+    <div class="form-text text-danger">{{ form_errors(form.password) }}</div>
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label text-danger'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+    <div class="form-text text-danger">{{ form_errors(form.nom) }}</div>
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label text-danger'}}) }}
+    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+    <div class="form-text text-danger">{{ form_errors(form.prenom) }}</div>
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.image, 'Image de profil', {'label_attr': {'class': 'form-label text-danger'}}) }}
+    {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+    <div class="form-text text-danger">{{ form_errors(form.image) }}</div>
+</div>
+
+<button class="btn btn-danger">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}
